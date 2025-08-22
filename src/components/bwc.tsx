@@ -97,24 +97,25 @@ export const BackgroundBeamsWithCollision = ({
   );
 };
 
-const CollisionMechanism = React.forwardRef<
-  HTMLDivElement,
-  {
-    containerRef: React.RefObject<HTMLDivElement>;
-    parentRef: React.RefObject<HTMLDivElement>;
-    beamOptions?: {
-      initialX?: number;
-      translateX?: number;
-      initialY?: number;
-      translateY?: number;
-      rotate?: number;
-      className?: string;
-      duration?: number;
-      delay?: number;
-      repeatDelay?: number;
-    };
-  }
->(({ parentRef, containerRef, beamOptions = {} }, ref) => {
+const CollisionMechanism = ({
+  parentRef,
+  containerRef,
+  beamOptions = {},
+}: {
+  containerRef: React.RefObject<HTMLDivElement>;
+  parentRef: React.RefObject<HTMLDivElement>;
+  beamOptions?: {
+    initialX?: number;
+    translateX?: number;
+    initialY?: number;
+    translateY?: number;
+    rotate?: number;
+    className?: string;
+    duration?: number;
+    delay?: number;
+    repeatDelay?: number;
+  };
+}) => {
   const beamRef = useRef<HTMLDivElement>(null);
   const [beamKey, setBeamKey] = useState(0);
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
@@ -132,8 +133,6 @@ const CollisionMechanism = React.forwardRef<
 
         if (beamRect.bottom >= containerRect.top) {
           setCycleCollisionDetected(true);
-
-          // reset after short delay to allow looping
           setTimeout(() => {
             setCycleCollisionDetected(false);
             setBeamKey((prevKey) => prevKey + 1);
@@ -177,6 +176,4 @@ const CollisionMechanism = React.forwardRef<
       )}
     />
   );
-});
-
-CollisionMechanism.displayName = "CollisionMechanism";
+};
